@@ -4,6 +4,10 @@ import categoryController from '../controllers/categoryController';
 import userController from '../controllers/userController';
 
 const router = Router();
+// User Catalog(need permission)
+router.route('/user')
+    .get(userController.user)
+
 // User Login
 router.route('/sign-in')
     .get(userController.userSignInGet)
@@ -11,12 +15,12 @@ router.route('/sign-in')
 
 router.route('/sign-up')
     .get(userController.userSignUpGet)
-    .post(userController.userSignInPost);
-
-    
+    .post(userController.userSignUpPost);
+// Home Page
+router.get('/homepage',transactionController.homepage)
 
 // Transaction Routes
-router.get('/transactions', transactionController.transactionList);
+router.get('/transaction', transactionController.transactionList);
 
 router.route('/transaction/create')
     .get(transactionController.transactionCreateGet)
@@ -32,7 +36,7 @@ router.route('/transaction/:id/update')
 
 
 // Category Routes
-router.get('/categories', categoryController.categoryList);
+router.get('/category', categoryController.categoryList);
 
 router.route('/category/create')
     .get(categoryController.categoryCreateGet)

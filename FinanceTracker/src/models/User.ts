@@ -2,25 +2,25 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 export interface IUser {
-  Username: string;
-  Password: string;
-  Email: string;
+  username: string;
+  password: string;
+  email: string;
   validatePassword: (password: string) => boolean;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
-  Username: {
+  username: {
     type: String,
     required: true,
     maxlength: 100,
     unique: true
   },
-  Password: {
+  password: {
     type: String,
     required: true,
     maxlength: 100
   },
-  Email: {
+  email: {
     type: String,
     required: true,
     maxlength: 100,

@@ -2,6 +2,7 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 import express from 'express';
 import path from 'path';
+import session from 'express-session';
 import homepageRoutes from './routes/homepage';
 import User from './models/User';
 
@@ -13,6 +14,13 @@ mongoose.connect(process.env.MONGODB_URI as string)
 // Init Express
 const app = express();
 const port = process.env.PORT || 3000;
+
+//  Session middleware
+app.use(session({
+  secret: 'your-secret-key', // 用於簽署會話ID的密鑰
+  resave: false, // 是否在每次請求時強制保存會話，建議設置為 false
+  saveUninitialized: false // 是否保存未初始化的會話，建議設置為 false
+}));
 
 // Pug set
 app.set('view engine', 'pug');

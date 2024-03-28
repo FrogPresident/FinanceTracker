@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import TransactionRepository from '../repositories/transactionRepository';
 
 export const transactionController = {
+    homepage(req: Request, res: Response) {
+        res.send('home page');
+    },
     async transactionList(req: Request, res: Response, next: NextFunction) {
         try {
             const transactions = await TransactionRepository.getAllTransactions();

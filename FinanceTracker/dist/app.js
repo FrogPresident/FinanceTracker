@@ -7,6 +7,7 @@ require("dotenv/config");
 const mongoose_1 = __importDefault(require("mongoose"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
+const express_session_1 = __importDefault(require("express-session"));
 const homepage_1 = __importDefault(require("./routes/homepage"));
 // Try to connnect MongoDB
 mongoose_1.default.connect(process.env.MONGODB_URI)
@@ -15,6 +16,12 @@ mongoose_1.default.connect(process.env.MONGODB_URI)
 // Init Express
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
+//  Session middleware
+app.use((0, express_session_1.default)({
+    secret: 'your-secret-key', // 用於簽署會話ID的密鑰
+    resave: false, // 是否在每次請求時強制保存會話，建議設置為 false
+    saveUninitialized: false // 是否保存未初始化的會話，建議設置為 false
+}));
 // Pug set
 app.set('view engine', 'pug');
 // 設置views目錄的路徑

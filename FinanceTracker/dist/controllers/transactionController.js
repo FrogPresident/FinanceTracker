@@ -6,8 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.transactionController = void 0;
 const transactionRepository_1 = __importDefault(require("../repositories/transactionRepository"));
 exports.transactionController = {
-    homepage(req, res) {
-        res.send('home page');
+    async home(req, res) {
+        try {
+            const transactions = await transactionRepository_1.default.getAllTransactions();
+            res.render('home', { title: 'Transactions', transactions: transactions });
+        }
+        catch (error) {
+            res.status(500).send("Error Create Home page" + error.message);
+        }
     },
     async transactionList(req, res, next) {
         try {
@@ -19,12 +25,25 @@ exports.transactionController = {
         }
     },
     transactionCreateGet(req, res) {
-        res.render('transactionCreate', {
-            title: 'Create Transaction'
-        });
+        res.render('transactionCreate', { title: 'Create  Transacation' });
     },
-    transactionCreatePost(req, res) {
-        res.send('Transaction create POST page');
+    async transactionCreatePost(req, res) {
+        try {
+            const { date, description, transactionType, amount } = req.body;
+            const user = req.session.user;
+            const transactionData = {
+                date,
+                description,
+                transactionType,
+                amount,
+                user: user._id
+            };
+            const newTransaction = await transactionRepository_1.default.create(transactionData);
+            res.redirect('/home');
+        }
+        catch (error) {
+            res.status(500).send('Error creating transaction' + error.message);
+        }
     },
     transactionDeleteGet(req, res) {
         res.send('Transaction delete GET page');

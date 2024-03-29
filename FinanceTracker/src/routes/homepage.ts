@@ -17,7 +17,7 @@ router.route('/sign-up')
     .get(userController.userSignUpGet)
     .post(userController.userSignUpPost);
 // Home Page
-router.get('/homepage',transactionController.homepage)
+router.get('/home',transactionController.home)
 
 // Transaction Routes
 router.get('/transaction', transactionController.transactionList);

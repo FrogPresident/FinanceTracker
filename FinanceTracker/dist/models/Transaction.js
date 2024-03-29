@@ -34,5 +34,13 @@ transactionSchema.virtual('categories', {
     localField: '_id',
     foreignField: 'transaction'
 });
+transactionSchema.virtual('formattedDate').get(function () {
+    const formattedDate = this.date.toLocaleDateString('zh-TW', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    });
+    return formattedDate;
+});
 const Transaction = mongoose_1.default.model('Transaction', transactionSchema);
 exports.default = Transaction;

@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+        each transaction in transactions
+            
+            hr
+            if transaction.transactionType=='Income'
+                p.text-success #{transaction.transactionType}
+            else if transaction.transactionType=='Expense'
+                p.text-danger #{transaction.transactionType}
+
+            p #[strong Date:] #{transaction.formattedDate}
+            p #[strong Description:] #{transaction.description}
+            p #[strong Amount:] NT$#{transaction.amount}
+                
+        else
+            li There are no transaction.

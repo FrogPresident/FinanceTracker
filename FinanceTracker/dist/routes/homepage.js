@@ -19,7 +19,7 @@ router.route('/sign-up')
     .get(userController_1.default.userSignUpGet)
     .post(userController_1.default.userSignUpPost);
 // Home Page
-router.get('/homepage', transactionController_1.default.homepage);
+router.get('/home', transactionController_1.default.home);
 // Transaction Routes
 router.get('/transaction', transactionController_1.default.transactionList);
 router.route('/transaction/create')

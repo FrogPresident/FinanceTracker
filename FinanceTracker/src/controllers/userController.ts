@@ -50,7 +50,7 @@ export const userController = {
                 return res.status(401).send('Invalid username or password');
             }
             req.session.user = user;
-            res.redirect('/homepage');
+            res.redirect('/home');
             console.log(req.session.user);
         } catch (error: any) {
             res.status(500).send('Internal Server Error');

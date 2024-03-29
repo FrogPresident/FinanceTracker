@@ -1,4 +1,4 @@
-extends layout
+extends layoutLogin
 
 block content
   h1= title
@@ -9,4 +9,8 @@ block content
     .form-group
       label(for="password") Password
       input#password.form-control(type="text" name="password" required="required")
-    button.btn.btn-primary(type="submit") Submit
+    
+    .submit-container
+      button.btn.btn-primary(type="submit") Submit
+      a(href='/sign-up') Sign Up
+

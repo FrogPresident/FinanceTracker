@@ -1,8 +1,14 @@
 import { Request, Response } from 'express';
+import CategoryRepository from '../repositories/categoryRepository';
 
 export const categoryController = {
-    categoryList(req: Request, res: Response) {
-        res.send('Category list');
+    async categoryList(req: Request, res: Response) {
+        try{
+            const categories = await CategoryRepository.getAllCategories()
+            res.json(categories)
+        }catch(error:any){
+            res.status(500).send('Error Show Categories List'+error.message)
+        }
     },
     categoryCreateGet(req: Request, res: Response) {
         res.send('Category create GET page');

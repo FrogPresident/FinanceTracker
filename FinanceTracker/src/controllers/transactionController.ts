@@ -4,7 +4,8 @@ import TransactionRepository from '../repositories/transactionRepository';
 export const transactionController = {
     async home(req: Request, res: Response) {
         try {
-            const transactions = await TransactionRepository.getAllTransactions();
+            const userId = req.session.user?._id;
+            const transactions = await TransactionRepository.getAllTransactions(userId);
             res.render('home', { title: 'Transactions', transactions: transactions })
         } catch (error: any) {
             res.status(500).send("Error Create Home page" + error.message)

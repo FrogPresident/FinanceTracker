@@ -8,7 +8,8 @@ const transactionRepository_1 = __importDefault(require("../repositories/transac
 exports.transactionController = {
     async home(req, res) {
         try {
-            const transactions = await transactionRepository_1.default.getAllTransactions();
+            const userId = req.session.user?._id;
+            const transactions = await transactionRepository_1.default.getAllTransactions(userId);
             res.render('home', { title: 'Transactions', transactions: transactions });
         }
         catch (error) {

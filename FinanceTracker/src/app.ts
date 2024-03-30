@@ -33,6 +33,10 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
+// Redirect url to sign in page
+app.get('/', (req, res) => {
+  res.redirect('/sign-in');
+});
 
 // Application routes
 app.use('/', homepageRoutes);

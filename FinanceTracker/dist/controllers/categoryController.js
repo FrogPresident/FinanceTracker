@@ -16,10 +16,22 @@ exports.categoryController = {
         }
     },
     categoryCreateGet(req, res) {
-        res.send('Category create GET page');
+        res.render('categoryCreate', { title: 'Create Category' });
     },
-    categoryCreatePost(req, res) {
-        res.send('Category create POST action');
+    async categoryCreatePost(req, res) {
+        try {
+            const { name } = req.body;
+            const user = req.session.user;
+            const categoryData = {
+                name,
+                user: user._id
+            };
+            const newCategory = await categoryRepository_1.default.create(categoryData);
+            res.redirect('/home');
+        }
+        catch (error) {
+            res.status(500).send('Error creating category' + error.message);
+        }
     },
     categoryDeleteGet(req, res) {
         res.send('Category delete GET page');

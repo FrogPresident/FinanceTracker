@@ -27,6 +27,7 @@ exports.transactionController = {
     },
     transactionCreateGet(req, res) {
         res.render('transactionCreate', { title: 'Create  Transacation' });
+        console.log(req.session.user);
     },
     async transactionCreatePost(req, res) {
         try {

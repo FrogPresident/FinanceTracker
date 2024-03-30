@@ -2,11 +2,17 @@ import mongoose from 'mongoose';
 
 export interface ICategory {
     name: string;
+    user: mongoose.Schema.Types.ObjectId;
 }
 
 const categorySchema = new mongoose.Schema<ICategory>({
     name: {
         type: String,
+        required: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     }
 });

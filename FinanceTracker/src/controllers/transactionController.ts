@@ -1,13 +1,15 @@
+import mongoose from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 import TransactionRepository from '../repositories/transactionRepository';
 import categoryRepository from '../repositories/categoryRepository';
-
+import TransactionCategoryAssociationRepository from '../repositories/transactionCategoryAssociationRepository';
 
 export const transactionController = {
     async home(req: Request, res: Response) {
         try {
             const userId = req.session.user?._id;
             const transactions = await TransactionRepository.getAllTransactions(userId);
+            console.log(transactions)
             res.render('home', { title: 'Transactions', transactions: transactions })
         } catch (error: any) {
             res.status(500).send("Error Create Home page" + error.message)
@@ -24,8 +26,7 @@ export const transactionController = {
     async transactionCreateGet(req: Request, res: Response) {
         try {
             const categories = await categoryRepository.getAllCategories();
-            res.render('transactionCreate', { title: 'Create  Transacation' ,categories:categories})
-            console.log(categories)
+            res.render('transactionCreate', { title: 'Create  Transacation', categories: categories })
         } catch (error: any) {
             res.status(500).send('Error loading page: ' + error.message);
         }
@@ -33,7 +34,7 @@ export const transactionController = {
     },
     async transactionCreatePost(req: Request, res: Response) {
         try {
-            const { date, description, transactionType, amount ,categoryIds} = req.body;
+            const { date, description, transactionType, amount, categoryIds } = req.body;
             const user = req.session.user;
             const transactionData = {
                 date,
@@ -48,10 +49,10 @@ export const transactionController = {
             // Create Association between Transaction and Category
 
             if (categoryIds && categoryIds.length > 0) {
-                await Promise.all(categoryIds.map(categoryId => 
+                await Promise.all(categoryIds.map((categoryId: string) =>
                     TransactionCategoryAssociationRepository.create({
-                        transaction: newTransaction._id,
-                        category: categoryId
+                        transaction: newTransaction._id as unknown as mongoose.Schema.Types.ObjectId,
+                        category: categoryId as unknown as mongoose.Schema.Types.ObjectId
                     })
                 ));
             }

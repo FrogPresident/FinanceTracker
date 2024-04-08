@@ -6,11 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.transactionController = void 0;
 const transactionRepository_1 = __importDefault(require("../repositories/transactionRepository"));
 const categoryRepository_1 = __importDefault(require("../repositories/categoryRepository"));
+const transactionCategoryAssociationRepository_1 = __importDefault(require("../repositories/transactionCategoryAssociationRepository"));
 exports.transactionController = {
     async home(req, res) {
         try {
             const userId = req.session.user?._id;
             const transactions = await transactionRepository_1.default.getAllTransactions(userId);
+            console.log(transactions);
             res.render('home', { title: 'Transactions', transactions: transactions });
         }
         catch (error) {
@@ -30,7 +32,6 @@ exports.transactionController = {
         try {
             const categories = await categoryRepository_1.default.getAllCategories();
             res.render('transactionCreate', { title: 'Create  Transacation', categories: categories });
-            console.log(categories);
         }
         catch (error) {
             res.status(500).send('Error loading page: ' + error.message);
@@ -38,7 +39,7 @@ exports.transactionController = {
     },
     async transactionCreatePost(req, res) {
         try {
-            const { date, description, transactionType, amount } = req.body;
+            const { date, description, transactionType, amount, categoryIds } = req.body;
             const user = req.session.user;
             const transactionData = {
                 date,
@@ -50,6 +51,12 @@ exports.transactionController = {
             // Create Transaction
             const newTransaction = await transactionRepository_1.default.create(transactionData);
             // Create Association between Transaction and Category
+            if (categoryIds && categoryIds.length > 0) {
+                await Promise.all(categoryIds.map((categoryId) => transactionCategoryAssociationRepository_1.default.create({
+                    transaction: newTransaction._id,
+                    category: categoryId
+                })));
+            }
             res.redirect('/home');
         }
         catch (error) {

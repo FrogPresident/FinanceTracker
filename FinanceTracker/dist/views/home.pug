@@ -4,17 +4,24 @@ block content
   h1= title
 
   ul
-        each transaction in transactions
-            
-            hr
-            if transaction.transactionType=='Income'
-                p.text-success #{transaction.transactionType}
-            else if transaction.transactionType=='Expense'
-                p.text-danger #{transaction.transactionType}
+    each transaction in transactions
+        hr
+        if transaction.transactionType=='Income'
+            p.text-success #{transaction.transactionType}
+        else if transaction.transactionType=='Expense'
+            p.text-danger #{transaction.transactionType}
 
-            p #[strong Date:] #{transaction.formattedDate}
-            p #[strong Description:] #{transaction.description}
-            p #[strong Amount:] NT$#{transaction.amount}
-                
+        if transaction.categories && transaction.categories.length > 0
+            p #[strong Categories:]
+                ul
+                each category in transaction.categories
+                    li #{category.name}
         else
-            li There are no transaction.
+            p No categories.
+
+        p #[strong Date:] #{transaction.formattedDate}
+        p #[strong Description:] #{transaction.description}
+        p #[strong Amount:] NT$#{transaction.amount}
+                
+    else
+        li There are no transactions.

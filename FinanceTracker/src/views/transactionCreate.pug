@@ -17,4 +17,12 @@ block content
       select#type.form-control(name="transactionType")
         option(value="Income") Income
         option(value="Expense") Expense
+    .form-group
+      label Categories
+      // All categories
+      each category in categories
+        .checkbox
+          label
+            input(type="checkbox" name="categoryIds" value=category._id)
+            | #{category.name}
     button.btn.btn-primary(type="submit") Submit

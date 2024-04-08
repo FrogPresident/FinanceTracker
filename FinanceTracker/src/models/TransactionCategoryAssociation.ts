@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-interface ITransactionCategoryAssociation {
+export interface ITransactionCategoryAssociation {
     transaction: mongoose.Schema.Types.ObjectId;
     category: mongoose.Schema.Types.ObjectId;
 }

@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import TransactionRepository from '../repositories/transactionRepository';
+import categoryRepository from '../repositories/categoryRepository';
+
 
 export const transactionController = {
     async home(req: Request, res: Response) {
@@ -19,13 +21,19 @@ export const transactionController = {
             next(err);
         }
     },
-    transactionCreateGet(req: Request, res: Response) {
-        res.render('transactionCreate', { title: 'Create  Transacation' })
-        console.log(req.session.user)
+    async transactionCreateGet(req: Request, res: Response) {
+        try {
+            const categories = await categoryRepository.getAllCategories();
+            res.render('transactionCreate', { title: 'Create  Transacation' ,categories:categories})
+            console.log(categories)
+        } catch (error: any) {
+            res.status(500).send('Error loading page: ' + error.message);
+        }
+
     },
     async transactionCreatePost(req: Request, res: Response) {
         try {
-            const { date, description, transactionType, amount } = req.body;
+            const { date, description, transactionType, amount ,categoryIds} = req.body;
             const user = req.session.user;
             const transactionData = {
                 date,
@@ -34,7 +42,20 @@ export const transactionController = {
                 amount,
                 user: user._id
             };
+            // Create Transaction
             const newTransaction = await TransactionRepository.create(transactionData);
+
+            // Create Association between Transaction and Category
+
+            if (categoryIds && categoryIds.length > 0) {
+                await Promise.all(categoryIds.map(categoryId => 
+                    TransactionCategoryAssociationRepository.create({
+                        transaction: newTransaction._id,
+                        category: categoryId
+                    })
+                ));
+            }
+
             res.redirect('/home');
 
         } catch (error: any) {

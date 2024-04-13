@@ -36,19 +36,14 @@ router.route('/transaction/:id/update')
 
 
 // Category Routes
-router.get('/category', categoryController.categoryList);
+router.get('/categories', categoryController.categoryList);
 
-router.route('/category/create')
-    .get(categoryController.categoryCreateGet)
-    .post(categoryController.categoryCreatePost);
+router.route('/category')
+    .post(categoryController.categoryCreate);
 
-router.route('/category/:id/delete')
-    .get(categoryController.categoryDeleteGet)
-    .post(categoryController.categoryDeletePost);
-
-router.route('/category/:id/update')
-    .get(categoryController.categoryUpdateGet)
-    .post(categoryController.categoryUpdatePost);
+router.route('/category/:id')
+    .put(categoryController.categoryUpdate)
+    .delete(categoryController.categoryDelete);
 
 
 export default router;

@@ -32,14 +32,10 @@ router.route('/transaction/:id/update')
     .get(transactionController_1.default.transactionUpdateGet)
     .post(transactionController_1.default.transactionUpdatePost);
 // Category Routes
-router.get('/category', categoryController_1.default.categoryList);
-router.route('/category/create')
-    .get(categoryController_1.default.categoryCreateGet)
-    .post(categoryController_1.default.categoryCreatePost);
-router.route('/category/:id/delete')
-    .get(categoryController_1.default.categoryDeleteGet)
-    .post(categoryController_1.default.categoryDeletePost);
-router.route('/category/:id/update')
-    .get(categoryController_1.default.categoryUpdateGet)
-    .post(categoryController_1.default.categoryUpdatePost);
+router.get('/categories', categoryController_1.default.categoryList);
+router.route('/category')
+    .post(categoryController_1.default.categoryCreate);
+router.route('/category/:id')
+    .put(categoryController_1.default.categoryUpdate)
+    .delete(categoryController_1.default.categoryDelete);
 exports.default = router;

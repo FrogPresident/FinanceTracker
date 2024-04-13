@@ -2,7 +2,7 @@ extends layoutLogin
 
 block content
   h1= title
-  form(method="POST" action="/sign-in")
+  form(method="POST" action="/api/sign-in")
     .form-group
       label(for="username") Username
       input#username.form-control(type="text" name="username" required="required")

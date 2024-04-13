@@ -15,10 +15,10 @@ exports.categoryController = {
             res.status(500).send('Error Show Categories List' + error.message);
         }
     },
-    categoryCreateGet(req, res) {
-        res.render('categoryCreate', { title: 'Create Category' });
-    },
-    async categoryCreatePost(req, res) {
+    // categoryCreateGet(req: Request, res: Response) {
+    //     res.render('categoryCreate',{title:'Create Category'});
+    // },
+    async categoryCreate(req, res) {
         try {
             const { name } = req.body;
             const user = req.session.user;
@@ -27,22 +27,16 @@ exports.categoryController = {
                 user: user._id
             };
             const newCategory = await categoryRepository_1.default.create(categoryData);
-            res.redirect('/home');
+            res.redirect('/api/home');
         }
         catch (error) {
             res.status(500).send('Error creating category' + error.message);
         }
     },
-    categoryDeleteGet(req, res) {
-        res.send('Category delete GET page');
-    },
-    categoryDeletePost(req, res) {
+    categoryDelete(req, res) {
         res.send('Category delete POST action');
     },
-    categoryUpdateGet(req, res) {
-        res.send('Category update GET page');
-    },
-    categoryUpdatePost(req, res) {
+    categoryUpdate(req, res) {
         res.send('Category update POST action');
     },
 };

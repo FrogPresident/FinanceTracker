@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.categoryController = void 0;
 const categoryRepository_1 = __importDefault(require("../repositories/categoryRepository"));
+const Category_1 = __importDefault(require("../models/Category"));
 exports.categoryController = {
     async categoryList(req, res) {
         try {
@@ -33,11 +34,31 @@ exports.categoryController = {
             res.status(500).send('Error creating category' + error.message);
         }
     },
-    categoryDelete(req, res) {
-        res.send('Category delete POST action');
+    async categoryDelete(req, res) {
+        try {
+            const categoryId = req.params.id;
+            const deleteCategoryId = await Category_1.default.findByIdAndDelete(categoryId);
+            if (!deleteCategoryId) {
+                return res.status(404).send('Category not found');
+            }
+            res.send('Category deleted successfully');
+        }
+        catch (error) {
+            res.status(500).send('Error delete category' + error.message);
+        }
     },
-    categoryUpdate(req, res) {
-        res.send('Category update POST action');
+    async categoryUpdate(req, res) {
+        try {
+            const categoryId = req.params.id;
+            const { name } = req.body;
+            const updateCategory = await Category_1.default.findByIdAndUpdate(categoryId, { name }, { new: true });
+            if (!updateCategory) {
+                return res.status(404).send("Category not found");
+            }
+        }
+        catch (error) {
+            res.status(500).send('Error update category' + error.message);
+        }
     },
 };
 exports.default = exports.categoryController;
